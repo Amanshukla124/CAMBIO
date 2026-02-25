@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html class="dark">
+<head>
+    <meta charset="UTF-8">
+    <title>Cambio</title>
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class'
+        }
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body class="relative min-h-screen
+             bg-[#0f172a] text-gray-100
+             transition-colors duration-500 overflow-x-hidden">
+
+<!-- Floating Background -->
+<div class="fixed inset-0 -z-10 overflow-hidden">
+
+    <div class="absolute inset-0 bg-gradient-to-br
+                from-indigo-900/40 via-transparent to-purple-900/40">
+    </div>
+
+    <div class="floating-shape w-[300px] h-[500px]
+                bg-indigo-500/15
+                rounded-[30px]
+                top-[-10%] left-[-10%] rotate-[-10deg]"></div>
+
+    <div class="floating-shape w-[600px] h-[200px]
+                bg-rose-500/15
+                rounded-[20px]
+                bottom-[-5%] right-[-15%] rotate-[15deg]"></div>
+
+    <div class="floating-shape w-[250px] h-[250px]
+                bg-violet-500/15
+                rounded-[40px]
+                top-[40%] left-[-5%] rotate-[25deg]"></div>
+
+    <div class="floating-shape w-[200px] h-[120px]
+                bg-emerald-500/15
+                rounded-[20px]
+                top-[50%] right-[-10%] rotate-[35deg]"></div>
+
+</div>
+
+{% if request.endpoint != 'login' and request.endpoint != 'signup' %}
+
+<nav class="backdrop-blur-xl bg-white/5
+            border-b border-white/10
+            shadow-lg
+            p-4 flex justify-between items-center">
+
+    <a href="/" class="text-xl font-bold text-indigo-400 tracking-tight">
+        Cambio
+    </a>
+
+    {% if session.get('user_id') %}
+        <div class="flex items-center gap-6">
+
+            <a href="/dashboard" class="hover:text-indigo-400 transition">
+                Dashboard
+            </a>
+
+            <a href="/marketplace" class="hover:text-indigo-400 transition">
+                Marketplace
+            </a>
+
+            <span class="bg-indigo-500/20
+                         px-3 py-1 rounded-lg
+                         text-indigo-300
+                         font-semibold border border-indigo-500/30">
+                {{ session.get('user_name') }}
+            </span>
+
+            <a href="/logout"
+               class="bg-red-500/80 hover:bg-red-500
+                      text-white px-3 py-1 rounded-lg transition">
+                Logout
+            </a>
+
+        </div>
+    {% else %}
+        <div class="flex gap-4">
+            <a href="/login" class="hover:text-indigo-400 transition">
+                Login
+            </a>
+            <a href="/signup"
+               class="bg-indigo-600 hover:bg-indigo-700
+                      text-white px-4 py-1 rounded-lg transition">
+                Sign Up
+            </a>
+        </div>
+    {% endif %}
+
+</nav>
+
+{% endif %}
+
+<div class="p-8">
+    {% block content %}{% endblock %}
+</div>
+
+</body>
+</html>

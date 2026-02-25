@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="max-w-7xl mx-auto">
+
+    <!-- HERO SECTION -->
+    <section class="grid md:grid-cols-2 gap-12 items-center py-20">
+
+        <!-- Left Content -->
+        <div>
+            <h1 class="text-5xl font-bold leading-tight mb-6">
+                Exchange Unused Vouchers
+                <span class="text-indigo-600">Effortlessly</span>
+            </h1>
+
+            <p class="text-lg mb-8">
+                Turn unwanted vouchers into Cambio Credits and redeem
+                the vouchers you actually need.
+            </p>
+
+            <div class="flex gap-4">
+                <a href="/signup"
+                   class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-xl shadow transition">
+                    Get Started
+                </a>
+
+                <a href="/marketplace"
+                   class="border border-gray-300 hover:border-indigo-600 hover:text-indigo-600 px-6 py-3 rounded-xl transition">
+                    Browse Marketplace
+                </a>
+            </div>
+        </div>
+
+       <!-- 3D Voucher Stack -->
+<div class="relative w-full max-w-xl mx-auto h-[420px] flex items-center justify-center">
+
+    <div class="voucher-stack relative w-[360px] h-[420px]">
+
+        <!-- Card 1 -->
+        <div class="voucher-card card-1 bg-gradient-to-br from-indigo-500 to-purple-600 text-white">
+            <div class="p-6 h-full flex flex-col justify-between">
+                <div>
+                    <p class="text-sm opacity-70">Premium Voucher</p>
+                    <h2 class="text-2xl font-bold mt-2">CAMBIO</h2>
+                </div>
+                <div>
+                    <p class="text-sm">Value</p>
+                    <p class="text-3xl font-bold">₹2000</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="voucher-card card-2 bg-gradient-to-br from-emerald-400 to-green-600 text-white">
+            <div class="p-6 h-full flex flex-col justify-between">
+                <div>
+                    <p class="text-sm opacity-70">Active</p>
+                    <h2 class="text-2xl font-bold mt-2">Amazon</h2>
+                </div>
+                <div>
+                    <p class="text-sm">Points</p>
+                    <p class="text-3xl font-bold">1500</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="voucher-card card-3 bg-gradient-to-br from-rose-400 to-red-600 text-white">
+            <div class="p-6 h-full flex flex-col justify-between">
+                <div>
+                    <p class="text-sm opacity-70">Gold</p>
+                    <h2 class="text-2xl font-bold mt-2">Nike</h2>
+                </div>
+                <div>
+                    <p class="text-sm">Value</p>
+                    <p class="text-3xl font-bold">₹3000</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+    <!-- FEATURES SECTION -->
+    <section class="py-20">
+
+        <h2 class="text-3xl font-bold text-center mb-12">
+            Why Choose Cambio?
+        </h2>
+
+        <div class="grid md:grid-cols-3 gap-10">
+
+            <div class="bg-white p-8 rounded-2xl shadow hover:shadow-lg transition">
+                <h3 class="text-gray-600 text-xl font-semibold mb-4">
+                    Smart Valuation Engine
+                </h3>
+                <p class="text-gray-600">
+                    AI-powered tier classification ensures fair credit
+                    conversion based on brand value and expiry.
+                </p>
+            </div>
+
+            <div class="bg-white p-8 rounded-2xl shadow hover:shadow-lg transition">
+                <h3 class="text-gray-600 text-xl font-semibold mb-4">
+                    Secure Credit Economy
+                </h3>
+                <p class="text-gray-600">
+                    Safe credit transfers between buyers and sellers
+                    with complete transaction history tracking.
+                </p>
+            </div>
+
+            <div class="bg-white p-8 rounded-2xl shadow hover:shadow-lg transition">
+                <h3 class="text-gray-600 text-xl font-semibold mb-4">
+                    Expiry Protection
+                </h3>
+                <p class="text-gray-600">
+                    Automatic expiry detection keeps the marketplace
+                    clean and reliable.
+                </p>
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- CTA SECTION -->
+    <section class="bg-indigo-600 text-white rounded-3xl py-20 text-center shadow-lg mb-20">
+
+        <h2 class="text-3xl font-bold mb-6">
+            Ready to Exchange Smarter?
+        </h2>
+
+        <a href="/signup"
+           class="bg-white text-indigo-600 px-8 py-3 rounded-xl font-semibold hover:bg-gray-100 transition">
+            Create Your Account
+        </a>
+
+    </section>
+
+</div>
+
+{% endblock %}

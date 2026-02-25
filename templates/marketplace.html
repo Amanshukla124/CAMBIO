@@ -1,0 +1,255 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="max-w-7xl mx-auto">
+
+    <!-- Header -->
+    <div class="flex justify-between items-center mb-8">
+        <div>
+            <h1 class="text-3xl font-bold">Marketplace</h1>
+            <p class="mt-1">
+                Browse and redeem vouchers
+            </p>
+        </div>
+    </div>
+
+    <!-- Search + Filters -->
+    <form method="GET" class="flex flex-col md:flex-row gap-4 mb-12">
+
+        <input type="text" name="search"
+               value="{{ request.args.get('search', '') }}"
+               placeholder="Search by brand..."
+               class="flex-1 border rounded-xl px-4 py-3 focus:ring-2 focus:ring-indigo-500 focus:outline-none transition">
+
+        <select name="tier"
+                class="text-gray-600 border rounded-xl px-4 py-3 focus:ring-2 focus:ring-indigo-500 focus:outline-none transition">
+            <option value="">All Tiers</option>
+            <option value="Premium" {% if request.args.get('tier') == 'Premium' %}selected{% endif %}>Premium</option>
+            <option value="Gold" {% if request.args.get('tier') == 'Gold' %}selected{% endif %}>Gold</option>
+            <option value="Standard" {% if request.args.get('tier') == 'Standard' %}selected{% endif %}>Standard</option>
+            <option value="Basic" {% if request.args.get('tier') == 'Basic' %}selected{% endif %}>Basic</option>
+        </select>
+
+        <button type="submit"
+                class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 rounded-xl transition">
+            Apply
+        </button>
+
+    </form>
+
+    {% if vouchers %}
+    <div class="grid md:grid-cols-3 lg:grid-cols-4 gap-10">
+
+        {% for voucher in vouchers %}
+        <div class="group relative h-[340px] w-full max-w-[280px] [perspective:1500px]">
+
+            <div class="relative h-full w-full transition-all duration-700
+                        [transform-style:preserve-3d]
+                        group-hover:[transform:rotateY(180deg)]">
+
+                <!-- FRONT -->
+                <div class="absolute inset-0 rounded-2xl bg-white shadow-md border p-6
+                            [backface-visibility:hidden]">
+
+                    {% if voucher.image %}
+                    <img src="{{ url_for('static', filename='uploads/' + voucher.image) }}"
+                         class="h-40 w-full object-cover rounded-xl mb-4">
+                    {% else %}
+                    <div class="h-40 rounded-xl bg-gradient-to-br from-indigo-100 to-indigo-200
+                                flex items-center justify-center
+                                text-indigo-600 font-bold text-xl mb-4">
+                        {{ voucher.brand }}
+                    </div>
+                    {% endif %}
+
+                    <h3 class="text-gray-600 font-semibold text-lg">
+                        {{ voucher.brand }}
+                    </h3>
+
+                    <p class="text-sm text-gray-600 mt-2">
+                        ₹{{ voucher.value }} Voucher
+                    </p>
+
+                    <p class="mt-3 text-indigo-600 font-semibold">
+                        {{ voucher.points }} Credits
+                    </p>
+                </div>
+
+                <!-- BACK -->
+                <div class="absolute inset-0 rounded-2xl
+                            bg-gradient-to-br from-white to-gray-50
+                            shadow-lg border p-6
+                            [backface-visibility:hidden]
+                            [transform:rotateY(180deg)]
+                            flex flex-col justify-between">
+
+                    <div>
+                        <h3 class="font-semibold text-lg mb-3">
+                            {{ voucher.brand }}
+                        </h3>
+
+                        <p class="text-sm text-gray-600 mb-2">
+                            Tier: <span class="font-semibold">{{ voucher.tier }}</span>
+                        </p>
+
+                        <p class="text-sm text-gray-600 mb-2">
+                            Expiry: {{ voucher.expiry }}
+                        </p>
+
+                        <p class="text-sm text-gray-600">
+                            Seller: {{ voucher.name }}
+                        </p>
+                    </div>
+
+                    <a href="/redeem/{{ voucher.id }}"
+   onclick="handleRedeem(event, {{ voucher.points }}, '{{ voucher.id }}')"
+   class="mt-6 bg-indigo-600 hover:bg-indigo-700
+          text-white text-center py-2 rounded-lg transition">
+    Redeem Now
+</a>
+
+                </div>
+
+            </div>
+        </div>
+        {% endfor %}
+
+    </div>
+    {% else %}
+        <div class="bg-white p-12 rounded-2xl shadow text-center text-gray-500">
+            No vouchers found.
+        </div>
+    {% endif %}
+
+</div>
+
+<!-- Marketplace Purchase Animation -->
+<div id="purchaseModal"
+     class="fixed inset-0 hidden items-center justify-center bg-black/70 backdrop-blur-lg z-50">
+
+    <div class="relative w-[420px] rounded-3xl
+                bg-gradient-to-br from-[#0f172a]/90 via-[#1e1b4b]/90 to-[#312e81]/90
+                border border-indigo-500/30
+                backdrop-blur-2xl shadow-[0_0_60px_rgba(99,102,241,0.25)]
+                p-10 text-center overflow-hidden">
+
+        <!-- Glow -->
+        <div class="absolute inset-0 rounded-3xl
+                    bg-indigo-500/10 blur-3xl opacity-50"></div>
+
+        <!-- Processing -->
+        <div id="purchaseProcessing" class="flex flex-col items-center relative z-10">
+
+            <div class="relative w-24 h-24 mb-6">
+                <div class="absolute inset-0 rounded-full
+                            border-4 border-indigo-500 border-t-transparent
+                            animate-spin"></div>
+            </div>
+
+            <h2 class="text-lg font-semibold uppercase tracking-wider text-white">
+                Processing Purchase...
+            </h2>
+
+            <p class="text-indigo-300 text-xs mt-2">
+                Securing voucher transfer
+            </p>
+        </div>
+
+        <!-- Completed -->
+        <div id="purchaseCompleted" class="hidden flex flex-col items-center relative z-10">
+
+            <div class="relative w-24 h-24 mb-6 flex items-center justify-center">
+                <div class="absolute inset-0 rounded-full
+                            bg-indigo-500/20 blur-2xl"></div>
+
+                <svg class="w-20 h-20 text-indigo-400"
+                     viewBox="0 0 52 52">
+                    <circle cx="26" cy="26" r="25"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="3"
+                            class="opacity-30"/>
+                    <path fill="none"
+                          stroke="currentColor"
+                          stroke-width="4"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-dasharray="48"
+                          stroke-dashoffset="48"
+                          d="M14 27l7 7 17-17"
+                          id="purchaseCheck"/>
+                </svg>
+            </div>
+
+            <h2 class="text-lg font-semibold uppercase tracking-tight text-white">
+                Voucher Received
+            </h2>
+
+            <p class="text-indigo-300 text-xs mt-2">
+                Transaction ID:
+                <span id="purchaseTxn"></span>
+            </p>
+
+            <div class="mt-6 text-center">
+                <p class="text-sm text-zinc-400">Credits Spent</p>
+                <p class="text-3xl font-bold text-indigo-400">
+                    -<span id="creditsSpent">0</span>
+                </p>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<script>
+function handleRedeem(event, creditsUsed, voucherId) {
+
+    event.preventDefault(); // Stop immediate redirect
+
+    const modal = document.getElementById("purchaseModal");
+    const processing = document.getElementById("purchaseProcessing");
+    const completed = document.getElementById("purchaseCompleted");
+
+    modal.classList.remove("hidden");
+    modal.classList.add("flex");
+
+    setTimeout(() => {
+
+        processing.classList.add("hidden");
+        completed.classList.remove("hidden");
+
+        // Animate checkmark
+        const path = document.getElementById("purchaseCheck");
+        path.style.transition = "stroke-dashoffset 0.8s ease";
+        path.style.strokeDashoffset = "0";
+
+        // Transaction ID
+        const txnId = "TXN-" + Math.random().toString(36).substr(2, 9).toUpperCase();
+        document.getElementById("purchaseTxn").innerText = txnId;
+
+        animateSpentCredits(creditsUsed);
+
+        // Redirect AFTER animation
+        setTimeout(() => {
+            window.location.href = "/redeem/" + voucherId;
+        }, 3200);
+
+    }, 1500);
+}
+
+function animateSpentCredits(finalValue) {
+    let current = 0;
+    const increment = Math.ceil(finalValue / 40);
+
+    const counter = setInterval(() => {
+        current += increment;
+        if (current >= finalValue) {
+            current = finalValue;
+            clearInterval(counter);
+        }
+        document.getElementById("creditsSpent").innerText = current;
+    }, 30);
+}
+</script>
+{% endblock %}

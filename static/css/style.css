@@ -1,0 +1,139 @@
+/* ================= FLOATING BACKGROUND ================= */
+
+.floating-shape {
+    position: absolute;
+    backdrop-filter: blur(60px);
+    -webkit-backdrop-filter: blur(60px);
+    opacity: 0.5;
+
+    animation: floatMove 18s ease-in-out infinite;
+}
+
+/* Different speeds */
+.floating-shape:nth-of-type(2) {
+    animation-duration: 24s;
+}
+.floating-shape:nth-of-type(3) {
+    animation-duration: 20s;
+}
+.floating-shape:nth-of-type(4) {
+    animation-duration: 22s;
+}
+
+/* Only animate translateY */
+@keyframes floatMove {
+    0%   { translate: 0 0; }
+    50%  { translate: 0 40px; }
+    100% { translate: 0 0; }
+}
+
+/* Floating animation */
+.floating-shape {
+    position: absolute;
+    backdrop-filter: blur(60px);
+    -webkit-backdrop-filter: blur(60px);
+    opacity: 0.6;
+    animation: floatMove 18s ease-in-out infinite;
+}
+
+.floating-shape:nth-of-type(2) {
+    animation-duration: 24s;
+}
+.floating-shape:nth-of-type(3) {
+    animation-duration: 20s;
+}
+.floating-shape:nth-of-type(4) {
+    animation-duration: 22s;
+}
+
+@keyframes floatMove {
+    0%   { translate: 0 0; }
+    50%  { translate: 0 40px; }
+    100% { translate: 0 0; }
+}
+
+/* Smooth fade animation */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(15px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.8s ease forwards;
+}
+
+/* ===== 3D Voucher Stack ===== */
+
+.voucher-stack {
+    perspective: 2000px;
+}
+
+.voucher-card {
+    position: absolute;
+    width: 320px;
+    height: 380px;
+    border-radius: 28px;
+    backdrop-filter: blur(40px);
+    box-shadow:
+        0 30px 60px rgba(0,0,0,0.5),
+        0 0 60px rgba(99,102,241,0.2);
+    transition: all 0.6s cubic-bezier(.22,1,.36,1);
+}
+
+/* STACK POSITIONS */
+.card-1 {
+    left: 0;
+    transform: rotate(-6deg) translateY(20px);
+    z-index: 3;
+}
+
+.card-2 {
+    left: 30px;
+    transform: rotate(4deg) translateY(10px) scale(0.96);
+    z-index: 2;
+}
+
+.card-3 {
+    left: 60px;
+    transform: rotate(-3deg) scale(0.92);
+    z-index: 1;
+}
+
+/* FLOAT ANIMATION */
+@keyframes floatStack {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-18px); }
+    100% { transform: translateY(0px); }
+}
+
+.voucher-card {
+    animation: floatStack 6s ease-in-out infinite;
+}
+
+/* HOVER SPREAD EFFECT */
+.voucher-stack:hover .card-1 {
+    transform: translateX(-120px) rotate(-8deg);
+}
+
+.voucher-stack:hover .card-2 {
+    transform: translateX(0px) rotate(0deg);
+}
+
+.voucher-stack:hover .card-3 {
+    transform: translateX(120px) rotate(8deg);
+}}
+
+/* ===== HOVER FAN OUT ===== */
+
+.voucher-stack:hover .card-1 {
+    transform: translateX(-140px);
+}
+
+.voucher-stack:hover .card-2 {
+    transform: translateX(0px);
+}
+
+.voucher-stack:hover .card-3 {
+    transform: translateX(140px);
+}
+

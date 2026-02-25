@@ -1,0 +1,243 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="max-w-7xl mx-auto animate-fade-in">
+
+    <!-- ================= HEADER ================= -->
+    <div class="flex justify-between items-start mb-16">
+
+        <div>
+            <h1 class="text-4xl font-bold tracking-tight mb-2">
+                Dashboard
+            </h1>
+            <p class="text-gray-400">
+                Track your voucher performance
+            </p>
+        </div>
+
+        <!-- Credits Card -->
+        <div class="backdrop-blur-xl bg-white/5
+                    border border-white/10
+                    rounded-2xl shadow-xl
+                    px-8 py-6 text-center">
+
+            <p class="text-sm text-gray-400">
+                Available Credits
+            </p>
+
+            <p class="text-3xl font-bold text-indigo-400 mt-1">
+                {{ credits }}
+            </p>
+        </div>
+
+    </div>
+
+
+    <!-- ================= MAIN GRID ================= -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+
+        <!-- ===== LEFT SIDE (STATS) ===== -->
+        <div class="flex flex-col items-center">
+
+            <!-- Rings -->
+            <div class="relative w-[260px] h-[260px] mb-10">
+
+                <svg viewBox="0 0 260 260" class="-rotate-90">
+
+                    <!-- Background Rings -->
+                    <circle cx="130" cy="130" r="100"
+                        stroke="#334155" stroke-width="18"
+                        fill="none"/>
+
+                    <circle cx="130" cy="130" r="75"
+                        stroke="#334155" stroke-width="18"
+                        fill="none"/>
+
+                    <circle cx="130" cy="130" r="50"
+                        stroke="#334155" stroke-width="18"
+                        fill="none"/>
+
+                    <!-- Progress Rings -->
+                    <circle id="ring1"
+                        cx="130" cy="130" r="100"
+                        stroke="#8b5cf6"
+                        stroke-width="18"
+                        fill="none"
+                        stroke-linecap="round"
+                        stroke-dasharray="628"
+                        stroke-dashoffset="628"/>
+
+                    <circle id="ring2"
+                        cx="130" cy="130" r="75"
+                        stroke="#22c55e"
+                        stroke-width="18"
+                        fill="none"
+                        stroke-linecap="round"
+                        stroke-dasharray="471"
+                        stroke-dashoffset="471"/>
+
+                    <circle id="ring3"
+                        cx="130" cy="130" r="50"
+                        stroke="#ef4444"
+                        stroke-width="18"
+                        fill="none"
+                        stroke-linecap="round"
+                        stroke-dasharray="314"
+                        stroke-dashoffset="314"/>
+
+                </svg>
+            </div>
+
+            <!-- Total -->
+            <div class="text-center mb-12">
+                <p class="text-gray-400 text-sm">
+                    Total Vouchers
+                </p>
+                <p class="text-5xl font-bold">
+                    {{ total_uploaded }}
+                </p>
+            </div>
+
+            <!-- Legend -->
+            <div class="space-y-6">
+
+                <div class="flex items-center gap-4">
+                    <div class="w-4 h-4 rounded-full bg-purple-500"></div>
+                    <div>
+                        <p class="font-semibold">Redemption Rate</p>
+                        <p class="text-gray-400 text-sm">{{ redemption_rate }}%</p>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-4">
+                    <div class="w-4 h-4 rounded-full bg-green-500"></div>
+                    <div>
+                        <p class="font-semibold">Active Vouchers</p>
+                        <p class="text-gray-400 text-sm">{{ active_rate }}%</p>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-4">
+                    <div class="w-4 h-4 rounded-full bg-red-500"></div>
+                    <div>
+                        <p class="font-semibold">Expiry Rate</p>
+                        <p class="text-gray-400 text-sm">{{ expiry_rate }}%</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex gap-6 mt-12">
+
+                <a href="/upload"
+                   class="bg-indigo-600 hover:bg-indigo-700
+                          px-6 py-3 rounded-xl transition">
+                    Upload Voucher
+                </a>
+
+                <a href="/marketplace"
+                   class="bg-green-600 hover:bg-green-700
+                          px-6 py-3 rounded-xl transition">
+                    Browse Marketplace
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <!-- ===== RIGHT SIDE (VOUCHERS) ===== -->
+        <div>
+
+            <h2 class="text-2xl font-semibold mb-8">
+                Your Vouchers
+            </h2>
+
+            {% if vouchers %}
+            <div class="grid md:grid-cols-2 gap-8">
+
+                {% for voucher in vouchers %}
+                <div class="backdrop-blur-xl bg-white/5
+                            border border-white/10
+                            rounded-2xl shadow-xl
+                            p-6 hover:bg-white/10 transition">
+
+                    <div class="flex justify-between items-center mb-3">
+
+                        <h3 class="font-semibold text-lg">
+                            {{ voucher.brand }}
+                        </h3>
+
+                        <span class="text-xs px-3 py-1 rounded-full text-white
+                            {% if voucher.tier == 'Premium' %}
+                                bg-yellow-500
+                            {% elif voucher.tier == 'Gold' %}
+                                bg-purple-500
+                            {% elif voucher.tier == 'Standard' %}
+                                bg-blue-500
+                            {% else %}
+                                bg-gray-500
+                            {% endif %}
+                        ">
+                            {{ voucher.tier }}
+                        </span>
+                    </div>
+
+                    <p class="text-gray-300 text-sm">
+                        Value: ₹{{ voucher.value }}
+                    </p>
+
+                    <p class="text-gray-300 text-sm">
+                        Points: {{ voucher.points }}
+                    </p>
+
+                    <p class="mt-3 text-sm font-semibold
+                        {% if voucher.status == 'Approved' %}
+                            text-green-400
+                        {% elif voucher.status == 'Redeemed' %}
+                            text-indigo-400
+                        {% else %}
+                            text-red-400
+                        {% endif %}
+                    ">
+                        {{ voucher.status }}
+                    </p>
+
+                </div>
+                {% endfor %}
+
+            </div>
+
+            {% else %}
+            <div class="backdrop-blur-xl bg-white/5
+                        border border-white/10
+                        p-12 rounded-2xl text-center text-gray-400">
+                No vouchers uploaded yet.
+            </div>
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- Ring Animation Script -->
+<script>
+function animateRing(id, percent, circumference) {
+    const circle = document.getElementById(id);
+    const offset = circumference - (percent / 100) * circumference;
+    circle.style.transition = "stroke-dashoffset 2s ease";
+    circle.style.strokeDashoffset = offset;
+}
+
+window.onload = function() {
+    animateRing("ring1", {{ redemption_rate }}, 628);
+    animateRing("ring2", {{ active_rate }}, 471);
+    animateRing("ring3", {{ expiry_rate }}, 314);
+};
+</script>
+
+{% endblock %}
