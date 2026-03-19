@@ -2,6 +2,9 @@
 
 Cambio is a full-stack web application that allows users to exchange unused vouchers for credits and redeem vouchers they actually need.
 
+<img width="1920" height="991" alt="Screenshot 2026-03-19 at 1 14 10 PM" src="https://github.com/user-attachments/assets/c67a73d4-e911-45fc-a0e3-7d2de1850355" />
+
+
 Built using:
 - Python (Flask)
 - SQLite
@@ -25,6 +28,8 @@ Cambio solves this by converting vouchers into **Cambio Credits**, which can be 
 ## 🧠 AI Valuation Engine (Rule-Based)
 
 Cambio uses a rule-based valuation system to calculate voucher credits.
+
+<img width="1920" height="993" alt="Screenshot 2026-03-19 at 1 14 28 PM" src="https://github.com/user-attachments/assets/714598af-4df5-4744-89cc-894d952e7190" />
 
 Factors considered:
 
