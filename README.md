@@ -2,8 +2,8 @@
 
 Cambio is a full-stack web application that allows users to exchange unused vouchers for credits and redeem vouchers they actually need.
 
-<img width="1920" height="991" alt="Screenshot 2026-03-19 at 1 14 10 PM" src="https://github.com/user-attachments/assets/c67a73d4-e911-45fc-a0e3-7d2de1850355" />
-
+<img width="1440" height="810" alt="Screenshot 2026-04-03 at 2 30 53 PM" src="https://github.com/user-attachments/assets/b5be8596-a6e0-41ff-9e99-280c6441e98c" />
+<img width="1438" height="811" alt="Screenshot 2026-04-03 at 2 31 04 PM" src="https://github.com/user-attachments/assets/7c69fd26-10ca-4931-81b7-20de23f43490" />
 
 Built using:
 - Python (Flask)
